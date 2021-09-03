@@ -17,7 +17,7 @@ function App() {
             <Route exact path='/' render={() => (
               <>
                  <TagBar/>
-                 {/*<TodosList/>*/}
+                 <TodosList/>
               </>
             )
             }/>

@@ -4,7 +4,9 @@ import {useSelector, useDispatch} from "react-redux";
 
 import {selectAllTodos, fetchTodos} from "../todosSlice";
 
-import {TodosItem} from "../TodoItem/TodoItem";
+import './TodosList.css'
+
+import {TodoItem} from "../TodoItem/TodoItem";
 
 
 export const TodosList = () => {
@@ -19,15 +21,18 @@ export const TodosList = () => {
       if(todosStatus === 'idle') {
          dispatch(fetchTodos())
       }
-   }, [todos, dispatch])
+   }, [todosStatus, dispatch])
 
    const todosList = todos.map(todo=> (
-      <TodosItem key={todo.id} content={todo.content} date={todo.date}/>
+      <TodoItem key={todo.id} content={todo.content} date={todo.date}/>
    ))
 
+   if (error) {
+      return(<span>{error}</span>)
+   }
    return (
-     <>
+     <main className='todos-list'>
         {todosList}
-     </>
+     </main>
    )
 }

@@ -1,16 +1,39 @@
 import React from "react";
 
-export const TodosItem = ({content, date}) => {
+import './TodoItem.css'
+
+export const TodoItem = ({content, date}) => {
    return(
-     <label className="list-group-item d-flex gap-3">
-        <input className="form-check-input flex-shrink-0" type="checkbox" value=""/>
-        <span className="form-checked-content">
-           <strong>{content}</strong>
-           <small className="d-block text-muted">
-              <svg className="bi me-1" width="1em" height="1em"><use xlinkHref="#calendar-event"/></svg>
-              {date}
-           </small>
-        </span>
-     </label>
+     <div className="todo-item">
+        <button className="todo-item__complete-btn">
+           <svg>
+              <use xlinkHref='#check'/>
+           </svg>
+        </button>
+        <p className="todo-item__content">Забрать справку</p>
+        <div className="todo-item__tags">
+           <span className="badge bg-secondary">Срочно</span>
+           <span className="badge bg-secondary">Каждый день</span>
+
+           <button className='todo-item__edit-btn'>
+              <svg>
+                 <use xlinkHref='#pen'/>
+              </svg>
+           </button>
+        </div>
+        <div className="todo-item__extra-options">
+         <button className="todo-item__extra-button">
+            <svg>
+               <use xlinkHref='#bell'/>
+            </svg>
+         </button>
+         <button className="todo-item__extra-button">
+            <svg>
+               <use xlinkHref='#update-arrows'/>
+            </svg>
+         </button>
+        </div>
+        
+     </div>
    )
 }

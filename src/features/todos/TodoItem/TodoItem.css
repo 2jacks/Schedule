@@ -1,0 +1,33 @@
+.todo-item {
+	display: flex;
+	height: 70px;
+	padding: 15px 10px;
+	border-radius: 35px;
+	border: 1px solid #62FFA1;
+}
+
+.todo-item__complete-btn {
+	border: none;
+	background-color: #62FFA1;
+
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;	
+	overflow: hidden;
+}
+
+.todo-item__complete-btn > svg {
+	width: 20px;
+	height: 20px;
+
+}
+
+.todo-item__extra-button {
+	border: none;
+	background-color: transparent;
+}
+
+.todo-item__extra-button > svg {
+	width: 20px;
+	height: 20px;
+}

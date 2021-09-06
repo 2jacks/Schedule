@@ -8,7 +8,7 @@
 
 .logo {
   font-size: 26px;
-  color: #fff;
+  color: #000000;
   text-transform: uppercase;
 }
 
@@ -20,7 +20,4 @@
 
 .screen {
   display: flex;
-  height: 100vh;
 }
-
-

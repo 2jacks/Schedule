@@ -1,33 +1,107 @@
 .todo-item {
 	display: flex;
+	align-items: center;
+
 	height: 70px;
-	padding: 15px 10px;
+	padding: 15px 20px;
+	margin-bottom: 25px;
+
 	border-radius: 35px;
-	border: 1px solid #62FFA1;
+	box-shadow: 0 0 8px -3px rgba(34, 60, 80, 0.6);
+}
+.todo-item:last-child {
+	margin-bottom: 0;
 }
 
 .todo-item__complete-btn {
-	border: none;
-	background-color: #62FFA1;
-
 	width: 35px;
 	height: 35px;
-	border-radius: 50%;	
+	flex-shrink: 0;
+	margin-right: 50px;
+
+	border: none;
+	background-color: #62FFA1;
+	border-radius: 50%;
 	overflow: hidden;
+	box-shadow: 0 0 6px 3px rgba(98, 255, 161, 0.4);
 }
 
-.todo-item__complete-btn > svg {
+.todo-item__content {
+	margin-bottom: 4px;
+	font-weight: 500;
+}
+
+.todo-item__complete-btn svg {
+	width: 20px;
+	height: 20px;
+	margin-right: 0;
+}
+
+.todo-item__remind {
+	margin-right: 30px;
+	position: relative;
+}
+
+.todo-item__remind-time {
+	position: absolute;
+	bottom: -50%;
+	left: 50%;
+	transform: translate(-50%, 90%);
+
+	padding: 3px;
+	background-color: #c0c0c0;
+	border-radius: 3px;
+	white-space: nowrap;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity .2s ease-out;
+
+	font-size: 12px;
+
+}
+
+.todo-item__remind:hover .todo-item__remind-time {
+	visibility: visible;
+	opacity: .7;
+}
+
+.todo-item__remind svg {
 	width: 20px;
 	height: 20px;
 
+	fill: #0ABFCB;
 }
 
-.todo-item__extra-button {
+.todo-item__tags {
+	margin-left: 40px;
+	margin-right: 35px;
+}
+
+.badge {
+	margin-right: 5px;
+	background-color: #d0feff;
+	color: #a7a7a7;
+	font-weight: 400;
+
+}
+.badge:last-child {
+	margin-right: 0;
+}
+
+
+.todo-item__edit-btn {
 	border: none;
 	background-color: transparent;
+
+	width: 30px;
+	height: 30px;
+
+	margin-left: auto;
 }
 
-.todo-item__extra-button > svg {
+.todo-item__edit-btn svg {
 	width: 20px;
 	height: 20px;
+
+	fill: #ff9b00;
 }

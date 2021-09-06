@@ -1,5 +1,65 @@
 .todos-list {
-  padding: 80px 15px 15px 255px;
+  padding: 20px 15px 15px 25px;
   display: flex;
   flex-direction: column;
+  width: 100%;
+}
+
+.nav {
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+
+  position: sticky;
+  top: 0;
+  left: 0;
+}
+
+.nav-button {
+  border: none;
+  background-color: #fff;
+
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin-right: 30px;
+
+  border-radius: 50%;
+  box-shadow: 0 0 10px -3px rgba(34, 60, 80, 0.6);
+  transition: box-shadow .2s ease-out;
+
+}
+
+.nav-button:hover {
+  box-shadow: 0 0 10px -3px rgba(50, 180, 180, 1);
+}
+
+.nav-button svg{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 20px;
+  height: 20px;
+
+  fill: #32B4B4;
+}
+
+.add-todo-button {
+  width: 60px;
+  height: 60px;
+  margin-left: 120px;
+}
+.add-todo-button svg {
+  width: 40px;
+  height: 40px;
+}
+
+.todos-section {
+  margin-bottom: 30px;
+}
+
+.todos-section__title {
+  margin-bottom: 12px;
 }

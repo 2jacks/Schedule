@@ -1,0 +1,16 @@
+.todo-item__date {
+    display: flex;
+    align-items: center;
+
+    font-size: 14px;
+    color: #ACACAC;
+}
+
+.todo-item__date svg {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 10px;
+
+    fill: #ACACAC;
+}

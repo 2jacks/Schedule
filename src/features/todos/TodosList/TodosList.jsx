@@ -17,10 +17,25 @@ export const TodosList = () => {
   const error = useSelector((state) => state.todos.error)
 
   const todos = useSelector(selectAllTodos)
-  const completedTodos = todos.filter((todo) => todo.completed)
-  const uncompletedTodos = todos.filter((todo) => !todo.completed)
+  const filterTag = useSelector((state) => state.tags.currentTag)
+
+  const filteredTodos = todos.filter((todo) => {
+    if (filterTag !== 'all') {
+      return todo.tags.some((tag) => tag === filterTag)
+    } else {
+      return true
+    }
+  })
+  const completedTodos = filteredTodos.filter((todo) => todo.completed)
+  const uncompletedTodos = filteredTodos.filter((todo) => !todo.completed)
 
   const [showAddTodoForm, setShowAddTodoForm] = useState(false)
+
+  useEffect(() => {
+    if (todosStatus === 'idle') {
+      dispatch(fetchTodos())
+    }
+  }, [todosStatus, dispatch])
 
   const closeModal = () => {
     setShowAddTodoForm(false)
@@ -28,12 +43,6 @@ export const TodosList = () => {
   const addButtonClicked = () => {
     setShowAddTodoForm(true)
   }
-
-  useEffect(() => {
-    if (todosStatus === 'idle') {
-      dispatch(fetchTodos())
-    }
-  }, [todosStatus, dispatch])
 
   const completedList = completedTodos.map((todo) => {
     return (

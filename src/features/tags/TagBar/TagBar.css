@@ -65,3 +65,44 @@
 .tagbar__list-item:hover {
     box-shadow: 0 0 10px -3px rgba(0, 107, 180, 0.8);
 }
+
+
+
+
+
+.add-new-tag {
+    margin-top: 15px;
+    padding: 0 20px;
+
+    width: 100%;
+    display: flex;
+}
+
+.add-new-tag__input{
+    border: none;
+    border-bottom: 1px solid rgba(134, 134, 134, 0);
+    background-color: transparent;
+    color: #878686;
+    transition: border .2s ease-out;
+    padding: 5px;
+
+    margin-right: 6px;
+}
+.add-new-tag__input:focus {
+    outline: none;
+    border-bottom: 1px solid rgba(134, 134, 134, 1);
+}
+
+.add-new-tag__btn {
+    border: none;
+    background-color: transparent;
+
+}
+.add-new-tag__btn svg{
+    width: 15px;
+    height: 16px;
+    fill: #000000;
+}
+.add-new-btn__btn:disabled svg {
+    fill: #787878;
+}

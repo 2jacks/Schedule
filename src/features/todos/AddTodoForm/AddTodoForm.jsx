@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import './AddTodoForm.css'
 
@@ -15,7 +15,9 @@ export const AddTodoForm = ({ closeModal }) => {
 
   const [content, setContent] = useState('')
   const [date, setDate] = useState(null)
-  const [remind, setRemind] = useState(null)
+  const [remindDate, setRemindDate] = useState('')
+  const [remindTime, setRemindTime] = useState('')
+  const [remind, setRemind] = useState('')
   const [tags, setTags] = useState([])
 
   const [saveRequestStatus, setSaveRequestStatus] = useState('idle')
@@ -23,7 +25,32 @@ export const AddTodoForm = ({ closeModal }) => {
 
   const onContentChanged = (e) => setContent(e.target.value.trim())
   const onDateChanged = (e) => setDate(e.target.value)
-  const onRemindChanged = (e) => setRemind(e.target.value)
+  const onRemindDateChanged = (e) => {
+    const date = e.target.value
+    setRemindDate(() => {
+      console.log('insta-date', `${date} ${remindTime}`)
+      console.log(new Date(`${date} ${remindTime}`))
+      setRemind(new Date(`${date} ${remindTime}`))
+
+      return date
+    })
+  }
+
+  const onRemindTimeChanged = (e) => {
+    const time = e.target.value
+    setRemindTime(() => {
+      console.log('insta-time', `${remindDate} ${time}`)
+
+      setRemind(new Date(`${remindDate} ${time}`))
+
+      return time
+    })
+  }
+
+  useEffect(() => {
+    console.log(remind)
+  }, [remind])
+
   const onTagChanged = (e) => {
     const input = e.target
     if (input.checked) {
@@ -95,7 +122,12 @@ export const AddTodoForm = ({ closeModal }) => {
                 <input
                   type="date"
                   className="date-picker"
-                  onChange={onRemindChanged}
+                  onChange={onRemindDateChanged}
+                />
+                <input
+                  type="time"
+                  className="date-picker"
+                  onChange={onRemindTimeChanged}
                 />
               </div>
             </div>

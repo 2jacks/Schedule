@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import './TodoItem.css'
 
@@ -6,20 +6,48 @@ import { Time } from '../Time/Time'
 
 import { useDispatch, useSelector } from 'react-redux'
 
-import { completeTodo } from '../todosSlice'
+import { completeTodo, deleteTodo } from '../todosSlice'
 import { unwrapResult } from '@reduxjs/toolkit'
 
 export const TodoItem = ({ content, date, tags, remind, completed, id }) => {
   const dispatch = useDispatch()
   const error = useSelector((state) => state.todos.error)
 
+  const [deleteRequestStatus, setDeleteRequestStatus] = useState('idle')
+  const canDelete = deleteRequestStatus === 'idle'
+
+  const [completeRequestStatus, setCompleteRequestStatus] = useState('idle')
+  const canComplete = completeRequestStatus === 'idle'
+
   const todoId = id
 
   const onStatusChanged = () => {
-    try {
-      dispatch(completeTodo({ todoId, newStatus: !completed }))
-    } catch (err) {
-      console.log(err)
+    if (canComplete) {
+      try {
+        setCompleteRequestStatus('pending')
+        let resultAction = dispatch(
+          completeTodo({ todoId, newStatus: !completed })
+        )
+        unwrapResult(resultAction)
+      } catch (err) {
+        return <span>err</span>
+      } finally {
+        setCompleteRequestStatus('idle')
+      }
+    }
+  }
+
+  const onDeleteClicked = () => {
+    if (canDelete) {
+      try {
+        setDeleteRequestStatus('pending')
+        const resultAction = dispatch(deleteTodo(todoId))
+        unwrapResult(resultAction)
+      } catch (err) {
+        return <span>err</span>
+      } finally {
+        setDeleteRequestStatus('idle')
+      }
     }
   }
 
@@ -50,7 +78,11 @@ export const TodoItem = ({ content, date, tags, remind, completed, id }) => {
   }
   return (
     <div className="todo-item">
-      <button className="todo-item__complete-btn" onClick={onStatusChanged}>
+      <button
+        className="todo-item__complete-btn"
+        onClick={onStatusChanged}
+        disabled={!canComplete}
+      >
         <svg>
           <use xlinkHref="#check" />
         </svg>
@@ -69,11 +101,17 @@ export const TodoItem = ({ content, date, tags, remind, completed, id }) => {
       <div className="todo-item__tags">{renderedTags}</div>
 
       {reminder}
-
       <button className="todo-item__edit-btn">
         <svg>
           <use xlinkHref="#pen" />
         </svg>
+      </button>
+      <button
+        className="todo-item__delete-btn"
+        onClick={onDeleteClicked}
+        disabled={!canDelete}
+      >
+        X
       </button>
     </div>
   )

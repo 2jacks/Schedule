@@ -13,7 +13,7 @@
     left: 50%;
     transform: translateX(-50%);
 
-    width: 1000px;
+    width: 900px;
 
     padding: 20px;
 
@@ -36,7 +36,7 @@
     display: block;
     width: 100%;
 
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     margin-top: 20px;
 
     padding: 10px;
@@ -60,27 +60,25 @@
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
-    width: 48%;
 
     padding: 5px 20px;
     height: 60px;
     border-radius: 30px;
     box-shadow: 0 0 10px -3px rgba(34, 60, 80, 0.6);
+
+    font-size: 14px;
 }
 .add-todo-form__time-field svg {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     fill: #32B4B4;
+
+    margin-right: 10px;
 }
 .add-todo-form__tags {
-    margin-top: 60px;
-    margin-bottom: 100px;
-}
-.add-todo-form__tags select{
-    border-radius: 5px;
-    border-color: rgba(0, 0, 0, 0.21);
+    margin-top: 30px;
+    margin-bottom: 80px;
 }
 .add-todo-form__tags > span {
     margin-right: 10px;
@@ -95,7 +93,7 @@
     fill: #c2c2c2;
 }
 .add-todo-form__tags-group {
-    margin-top: 30px;
+    margin-top: 10px;
 
 }
 .add-todo-form__tag-badge {
@@ -109,7 +107,7 @@
     cursor: pointer;
     opacity: .5;
 
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 500;
 
 }
@@ -180,6 +178,8 @@
     padding: 6px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.36);
     transition: border .2s ease-out;
+
+    margin-left: 8px;
 }
 
 .date-picker:focus {

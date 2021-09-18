@@ -49,7 +49,7 @@ export const completeTodo = createAsyncThunk(
   'todos/completeTodo',
   async (update) => {
     const { todoId, newStatus } = update
-    fetch(
+    return fetch(
       `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/todos/${todoId}.json`,
       {
         method: 'PATCH',
@@ -62,11 +62,24 @@ export const completeTodo = createAsyncThunk(
       }
     )
       .then((res) => res.json())
-      .then((res) => {
-        return res
-      })
-    console.log('new status in thunk', newStatus)
-    return { todoId, newStatus }
+      .then((res) => ({ todoId, newStatus }))
+  }
+)
+
+export const deleteTodo = createAsyncThunk(
+  'todos/deleteTodo',
+  async (todoId) => {
+    return fetch(
+      `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/todos/${todoId}.json`,
+      {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => todoId)
   }
 )
 
@@ -92,6 +105,7 @@ const todosSlice = createSlice({
       state.status = 'failed'
       state.error = action.error.message
     },
+
     [addNewTodo.pending]: (state, action) => {
       state.status = 'loading'
     },
@@ -103,19 +117,27 @@ const todosSlice = createSlice({
       state.status = 'failed'
       state.error = action.error.message
     },
-    [completeTodo.pending]: (state, action) => {
-      state.status = 'loading'
-    },
+
     [completeTodo.fulfilled]: (state, action) => {
       const { todoId, newStatus } = action.payload
       const updatedTodo = state.todos.find((todo) => todo.id === todoId)
       if (updatedTodo) {
         updatedTodo.completed = newStatus
       }
-      state.status = 'complete'
     },
     [completeTodo.rejected]: (state, action) => {
-      state.status = 'errored'
+      state.error = action.error.message
+    },
+
+    [deleteTodo.fulfilled]: (state, action) => {
+      const todoId = action.payload
+
+      const existingTodo = state.todos.find((todo) => todo.id === todoId)
+      if (existingTodo) {
+        state.todos.splice(state.todos.indexOf(existingTodo), 1)
+      }
+    },
+    [deleteTodo.rejected]: (state, action) => {
       state.error = action.error.message
     },
   },

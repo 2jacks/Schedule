@@ -21,7 +21,8 @@ export const TodosList = () => {
 
   const filteredTodos = todos.filter((todo) => {
     if (filterTag !== 'all') {
-      return todo.tags.some((tag) => tag === filterTag)
+      if (todo.tags !== undefined && todo.tags !== null && todo.tags !== '')
+        return todo.tags.some((tag) => tag === filterTag)
     } else {
       return true
     }

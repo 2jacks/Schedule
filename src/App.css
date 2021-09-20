@@ -20,4 +20,11 @@
 
 .screen {
   display: flex;
+  height: 100vh;
 }
+/*@media (max-width: 752px) {*/
+/*  .screen {*/
+/*    flex-direction: column;*/
+/*    height: auto;*/
+/*  }*/
+/*}*/

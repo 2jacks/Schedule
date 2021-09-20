@@ -1,52 +1,27 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
-import './AddTodoForm.css'
+import './EditTodoForm.css'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
 
-import { addNewTodo } from '../todosSlice'
+import { selectTodoById, updateTodo } from '../todosSlice'
 import { selectAllTags } from '../../tags/tagsSlice'
 
-export const AddTodoForm = ({ closeModal }) => {
+export const EditTodoForm = ({ closeModal, todoId }) => {
   const dispatch = useDispatch()
-
+  const todo = useSelector((state) => selectTodoById(state, todoId))
   const allTags = useSelector(selectAllTags)
 
-  const [content, setContent] = useState('')
-  const [date, setDate] = useState(null)
-  // const [remindDate, setRemindDate] = useState('')
-  // const [remindTime, setRemindTime] = useState('')
-  // const [remind, setRemind] = useState('')
-  const [tags, setTags] = useState([])
+  const [content, setContent] = useState(todo.content)
+  const [date, setDate] = useState(todo.date)
+  const [tags, setTags] = useState(() => (todo.tags ? todo.tags : []))
 
   const [saveRequestStatus, setSaveRequestStatus] = useState('idle')
-  const canSave = content.trim().length > 0 && saveRequestStatus === 'idle'
+  const canSave = saveRequestStatus === 'idle'
 
-  const onContentChanged = (e) => setContent(e.target.value.trim())
+  const onContentChanged = (e) => setContent(e.target.value)
   const onDateChanged = (e) => setDate(e.target.value)
-  // const onRemindDateChanged = (e) => {
-  //   const date = e.target.value
-  //   setRemindDate(() => {
-  //     console.log('insta-date', `${date} ${remindTime}`)
-  //     console.log(new Date(`${date} ${remindTime}`))
-  //     setRemind(new Date(`${date} ${remindTime}`))
-  //
-  //     return date
-  //   })
-  // }
-
-  // const onRemindTimeChanged = (e) => {
-  //   const time = e.target.value
-  //   setRemindTime(() => {
-  //     console.log('insta-time', `${remindDate} ${time}`)
-  //
-  //     setRemind(new Date(`${remindDate} ${time}`))
-  //
-  //     return time
-  //   })
-  // }
-
   const onTagChanged = (e) => {
     const input = e.target
     if (input.checked) {
@@ -56,14 +31,13 @@ export const AddTodoForm = ({ closeModal }) => {
     }
     input.parentNode.classList.toggle('op-1')
   }
-
-  const onSaveTodoClicked = async (e) => {
+  const onEditSaveClicked = async (e) => {
     e.preventDefault()
     if (canSave) {
       try {
         setSaveRequestStatus('pending')
         const resultAction = await dispatch(
-          addNewTodo({ content, date, tags }) // there was 'remind' parameter
+          updateTodo({ todoId, content, date, tags })
         )
         unwrapResult(resultAction)
       } catch (err) {
@@ -76,13 +50,24 @@ export const AddTodoForm = ({ closeModal }) => {
   }
 
   const renderedAllTags = allTags.map((tag) => {
+    let isTagSelectedByUser = false
+    if (tags !== null && tags !== undefined) {
+      isTagSelectedByUser = tags.some((selectedTag) => selectedTag === tag.name)
+    }
+
     return (
-      <label className="add-todo-form__tag-badge" key={tag.id}>
+      <label
+        className={`add-todo-form__tag-badge ${
+          isTagSelectedByUser ? 'op-1' : ''
+        }`}
+        key={tag.id}
+      >
         <input
           value={tag.name}
           name="tag"
           type="checkbox"
           onClick={onTagChanged}
+          defaultChecked={isTagSelectedByUser}
         />
         {tag.name}
       </label>
@@ -100,6 +85,7 @@ export const AddTodoForm = ({ closeModal }) => {
                 type="text"
                 className="add-todo-form__input-content"
                 autoFocus={true}
+                value={content}
                 onChange={onContentChanged}
               />
             </label>
@@ -112,6 +98,7 @@ export const AddTodoForm = ({ closeModal }) => {
                 <input
                   type="date"
                   className="date-picker"
+                  value={date}
                   onChange={onDateChanged}
                 />
               </div>
@@ -147,8 +134,7 @@ export const AddTodoForm = ({ closeModal }) => {
             </button>
             <button
               className="add-todo-form__save-todo"
-              disabled={!canSave}
-              onClick={onSaveTodoClicked}
+              onClick={onEditSaveClicked}
             >
               <svg>
                 <use xlinkHref="#check" />

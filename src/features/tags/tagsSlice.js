@@ -30,6 +30,14 @@ export const addNewTag = createAsyncThunk('tags/addNewTag', async (tag) => {
     .then((res) => res.json())
     .then((res) => ({ id: res.name, name: tag }))
 })
+export const deleteTag = createAsyncThunk('tags/deleteTag', async (tagId) => {
+  return fetch(
+    `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/tags/${tagId}.json`,
+    { method: 'DELETE' }
+  )
+    .then((res) => res.json())
+    .then((res) => tagId)
+})
 
 const tagsSlice = createSlice({
   name: 'tags',
@@ -61,6 +69,16 @@ const tagsSlice = createSlice({
       state.tags.push(action.payload)
     },
     [addNewTag.rejected]: (state, action) => {
+      state.error = action.error.message
+    },
+    [deleteTag.fulfilled]: (state, action) => {
+      const tagId = action.payload
+      const existingTag = state.tags.find((tag) => tag.id === tagId)
+      if (existingTag) {
+        state.tags.splice(state.tags.indexOf(existingTag), 1)
+      }
+    },
+    [deleteTag.rejected]: (state, action) => {
       state.error = action.error.message
     },
   },

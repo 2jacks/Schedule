@@ -12,6 +12,9 @@
 .todo-item:last-child {
 	margin-bottom: 0;
 }
+.todo-item--completed {
+	opacity: .5;
+}
 
 .todo-item__complete-btn {
 	width: 35px;
@@ -96,7 +99,6 @@
 	width: 30px;
 	height: 30px;
 
-	margin-left: auto;
 }
 
 .todo-item__edit-btn svg {

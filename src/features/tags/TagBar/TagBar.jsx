@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import './TagBar.css'
 
 import { useSelector, useDispatch } from 'react-redux'
 
 import { addNewTag, fetchTags, selectAllTags, setFilterTag } from '../tagsSlice'
 
-import './TagBar.css'
+import { SingleTag } from '../SingleTag/SingleTag'
 
 export const TagBar = () => {
   const dispatch = useDispatch()
@@ -32,41 +33,32 @@ export const TagBar = () => {
     setNewTag('')
   }
 
-  const renderedTags = tags.map((tag) => {
-    return (
-      <li key={tag.id} className="tagbar__list-item">
-        <label>
-          {tag.name}
-          <input
-            type="radio"
-            name={'tag'}
-            onChange={onTagChanged}
-            value={tag.name}
-          />
-        </label>
-      </li>
-    )
-  })
+  const renderedTags = tags.map((tag) => (
+    <SingleTag
+      id={tag.id}
+      name={tag.name}
+      value={tag.name}
+      onChangeHandler={onTagChanged}
+      key={tag.id}
+    />
+  ))
 
   if (error) {
     return <span>{error}</span>
   }
   return (
     <aside className="tagbar">
-      <h1 className="logo tagbar__logo">SCHEDULE</h1>
+      <div className="tagbar__logo">
+        <h1 className="logo">SCHEDULE</h1>
+      </div>
       <h2 className="tagbar__title">Теги</h2>
       <ul className="tagbar__list">
-        <li className="tagbar__list-item">
-          <label>
-            Все
-            <input
-              type="radio"
-              name={'tag'}
-              onChange={onTagChanged}
-              value={'all'}
-            />
-          </label>
-        </li>
+        <SingleTag
+          id={'1'}
+          name={'Все'}
+          onChangeHandler={onTagChanged}
+          value={'all'}
+        />
         {renderedTags}
       </ul>
       <div className="add-new-tag">

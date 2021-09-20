@@ -4,27 +4,38 @@
 
     width: 240px;
     flex-shrink: 0;
-    height: 100vh;
+    height: 100%;
 
-    position: sticky;
-    top: 0;
-    left: 0;
+    position: relative;
+    /*position: sticky;*/
+    /*top: 0;*/
+    /*left: 0;*/
 
-    box-shadow: -5px 0 7px -7px rgba(34, 60, 80, 0.44) inset;
+    border-right: 1px solid rgb(181, 181, 181);
 }
 
 .tagbar__logo {
-    padding: 20px;
-    text-align: center;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .tagbar__title {
+    height: 60px;
+
+    position: relative;
+    z-index: 20;
+
+    padding: 15px 0 15px 15px;
+    margin-bottom: 0;
+
+    border-top: 1px solid rgb(181, 181, 181);
+    box-shadow: 0px 4px 5px -2px rgba(34, 60, 80, 0.23);
+
     color: rgb(51, 51, 51);
     font-size: 24px;
     font-weight: 700;
-
-    margin-top: 35px;
-    margin-bottom: 20px;
-    margin-left: 15px;
 }
 
 .tagbar__list {
@@ -32,50 +43,32 @@
     flex-direction: column;
     align-items: flex-start;
 
+    overflow-y: scroll;
+    /*overflow-x: hidden;*/
+    height: calc(100% - 70px - 60px - 55px);
+
+    z-index: 10;
+
+
     list-style: none;
-    padding: 0;
-
-    margin-left: 15px;
+    margin-bottom: 0;
+    padding: 20px 10px 20px 15px;
 }
-
-.tagbar__list-item {
-    height: 40px;
-    padding: 10px 20px;
-    border-radius: 20px;
-    box-shadow: 0 0 6px -3px rgba(34, 60, 80, 0.6);
-    transition: box-shadow .2s ease-out;
-    cursor: pointer;
-
-    color: rgb(51, 51, 51);
-    font-size: 18px;
-    line-height: 1.2;
-
-    margin-bottom: 25px;
-}
-
-.tagbar__list-item label{
-    cursor: pointer;
-}
-
-.tagbar__list-item input{
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-.tagbar__list-item:hover {
-    box-shadow: 0 0 10px -3px rgba(0, 107, 180, 0.8);
-}
-
-
-
-
 
 .add-new-tag {
-    margin-top: 15px;
     padding: 0 20px;
+    height: 55px;
+    z-index: 20;
 
     width: 100%;
     display: flex;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    background-color: rgb(248, 248, 248);
+    box-shadow: 0px -4px 5px -2px rgba(34, 60, 80, 0.23);
 }
 
 .add-new-tag__input{
@@ -84,14 +77,16 @@
     background-color: transparent;
     color: #878686;
     transition: border .2s ease-out;
-    padding: 5px;
+    padding: 5px 5px 0 5px;
 
+    margin-bottom: 5px;
     margin-right: 6px;
 }
 .add-new-tag__input:focus {
     outline: none;
     border-bottom: 1px solid rgba(134, 134, 134, 1);
 }
+
 
 .add-new-tag__btn {
     border: none;
@@ -103,6 +98,6 @@
     height: 16px;
     fill: #000000;
 }
-.add-new-btn__btn:disabled svg {
+.add-new-tag__btn:disabled svg {
     fill: #787878;
 }

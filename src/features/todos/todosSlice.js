@@ -21,7 +21,7 @@ export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
 export const addNewTodo = createAsyncThunk(
   'todos/addNewTodo',
   async (initialTodo) => {
-    let { content, date, remind, tags } = initialTodo
+    let { content, date, tags } = initialTodo
     return fetch(
       'https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/todos.json',
       {
@@ -33,7 +33,6 @@ export const addNewTodo = createAsyncThunk(
           completed: false,
           content,
           date,
-          remind,
           tags,
         }),
       }
@@ -80,6 +79,29 @@ export const deleteTodo = createAsyncThunk(
     )
       .then((res) => res.json())
       .then((res) => todoId)
+  }
+)
+
+export const updateTodo = createAsyncThunk(
+  'todos/updateTodo',
+  async (updatedTodo) => {
+    const { todoId, content, date, tags } = updatedTodo
+    return fetch(
+      `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/todos/${todoId}.json`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({
+          content,
+          date,
+          tags,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => ({
+        todoId,
+        ...res,
+      }))
   }
 )
 
@@ -138,6 +160,20 @@ const todosSlice = createSlice({
       }
     },
     [deleteTodo.rejected]: (state, action) => {
+      state.error = action.error.message
+    },
+    [updateTodo.fulfilled]: (state, action) => {
+      const updatedTodo = action.payload
+      let existingTodo = state.todos.find(
+        (todo) => todo.id === updatedTodo.todoId
+      )
+      if (existingTodo) {
+        existingTodo.content = updatedTodo.content
+        existingTodo.date = updatedTodo.date
+        existingTodo.tags = updatedTodo.tags
+      }
+    },
+    [updateTodo.rejected]: (state, action) => {
       state.error = action.error.message
     },
   },

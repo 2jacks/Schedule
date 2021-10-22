@@ -9,10 +9,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { completeTodo, deleteTodo } from '../todosSlice'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { EditTodoForm } from '../EditTodoForm/EditTodoForm'
+import { selectUser } from '../../user/userSlice'
 
 export const TodoItem = ({ content, date, tags, remind, completed, id }) => {
   const dispatch = useDispatch()
-  const error = useSelector((state) => state.todos.error)
+  const user = useSelector(selectUser)
+  const error = useSelector((state) => state.user.error)
 
   const [deleteRequestStatus, setDeleteRequestStatus] = useState('idle')
   const canDelete = deleteRequestStatus === 'idle'
@@ -29,7 +31,7 @@ export const TodoItem = ({ content, date, tags, remind, completed, id }) => {
       try {
         setCompleteRequestStatus('pending')
         let resultAction = dispatch(
-          completeTodo({ todoId, newStatus: !completed })
+          completeTodo({ uid: user.localId, todoId, newStatus: !completed })
         )
         unwrapResult(resultAction)
       } catch (err) {
@@ -43,7 +45,7 @@ export const TodoItem = ({ content, date, tags, remind, completed, id }) => {
     if (canDelete) {
       try {
         setDeleteRequestStatus('pending')
-        const resultAction = dispatch(deleteTodo(todoId))
+        const resultAction = dispatch(deleteTodo({ uid: user.localId, todoId }))
         unwrapResult(resultAction)
       } catch (err) {
         return <span>err</span>

@@ -1,14 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { selectUser } from '../user/userSlice'
+import { useSelector } from 'react-redux'
 
 let initialState = {
   todos: [],
   status: 'idle',
   error: null,
 }
-
-export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
+//
+export const fetchTodos = createAsyncThunk('todos/fetchTodos', async (uid) => {
   return fetch(
-    'https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/todos.json'
+    `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/todos.json`
   )
     .then((res) => {
       return res.json()
@@ -17,13 +19,13 @@ export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
       return todos
     })
 })
-
+//
 export const addNewTodo = createAsyncThunk(
   'todos/addNewTodo',
   async (initialTodo) => {
-    let { content, date, tags } = initialTodo
+    let { uid, content, date, tags } = initialTodo
     return fetch(
-      'https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/todos.json',
+      `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/todos.json`,
       {
         method: 'POST',
         headers: {
@@ -43,13 +45,13 @@ export const addNewTodo = createAsyncThunk(
       })
   }
 )
-
+//
 export const completeTodo = createAsyncThunk(
   'todos/completeTodo',
   async (update) => {
-    const { todoId, newStatus } = update
+    const { uid, todoId, newStatus } = update
     return fetch(
-      `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/todos/${todoId}.json`,
+      `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/todos/${todoId}.json`,
       {
         method: 'PATCH',
         headers: {
@@ -64,30 +66,28 @@ export const completeTodo = createAsyncThunk(
       .then((res) => ({ todoId, newStatus }))
   }
 )
-
-export const deleteTodo = createAsyncThunk(
-  'todos/deleteTodo',
-  async (todoId) => {
-    return fetch(
-      `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/todos/${todoId}.json`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((res) => todoId)
-  }
-)
+//
+export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (req) => {
+  const { uid, todoId } = req
+  return fetch(
+    `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/todos/${todoId}.json`,
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+    .then((res) => res.json())
+    .then((res) => todoId)
+})
 
 export const updateTodo = createAsyncThunk(
   'todos/updateTodo',
   async (updatedTodo) => {
-    const { todoId, content, date, tags } = updatedTodo
+    const { uid, todoId, content, date, tags } = updatedTodo
     return fetch(
-      `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/todos/${todoId}.json`,
+      `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/todos/${todoId}.json`,
       {
         method: 'PATCH',
         body: JSON.stringify({

@@ -1,13 +1,15 @@
 import React from 'react'
 import './SingleTag.css'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteTag } from '../tagsSlice'
+import { selectUser } from '../../user/userSlice'
 
 export const SingleTag = ({ id, name, value, onChangeHandler }) => {
   const dispatch = useDispatch()
+  const user = useSelector(selectUser)
   const onDeleteButtonClicked = () => {
-    dispatch(deleteTag(id))
+    dispatch(deleteTag({ uid: user.localId, tagId: id }))
   }
   return (
     <>

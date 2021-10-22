@@ -7,9 +7,11 @@ import { unwrapResult } from '@reduxjs/toolkit'
 
 import { addNewTodo } from '../todosSlice'
 import { selectAllTags } from '../../tags/tagsSlice'
+import { selectUser } from '../../user/userSlice'
 
 export const AddTodoForm = ({ closeModal }) => {
   const dispatch = useDispatch()
+  const user = useSelector(selectUser)
 
   const allTags = useSelector(selectAllTags)
 
@@ -63,7 +65,7 @@ export const AddTodoForm = ({ closeModal }) => {
       try {
         setSaveRequestStatus('pending')
         const resultAction = await dispatch(
-          addNewTodo({ content, date, tags }) // there was 'remind' parameter
+          addNewTodo({ uid: user.localId, content, date, tags }) // there was 'remind' parameter
         )
         unwrapResult(resultAction)
       } catch (err) {

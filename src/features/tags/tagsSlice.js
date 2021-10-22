@@ -7,9 +7,9 @@ const initialSlice = {
   currentTag: 'all',
 }
 
-export const fetchTags = createAsyncThunk('tags/fetchTags', async () => {
+export const fetchTags = createAsyncThunk('tags/fetchTags', async (uid) => {
   return fetch(
-    'https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/tags.json'
+    `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/tags.json`
   )
     .then((res) => {
       return res.json()
@@ -19,9 +19,10 @@ export const fetchTags = createAsyncThunk('tags/fetchTags', async () => {
     })
 })
 
-export const addNewTag = createAsyncThunk('tags/addNewTag', async (tag) => {
+export const addNewTag = createAsyncThunk('tags/addNewTag', async (req) => {
+  const { uid, tag } = req
   return fetch(
-    'https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/tags.json',
+    `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/tags.json`,
     {
       method: 'POST',
       body: JSON.stringify(tag),
@@ -30,9 +31,10 @@ export const addNewTag = createAsyncThunk('tags/addNewTag', async (tag) => {
     .then((res) => res.json())
     .then((res) => ({ id: res.name, name: tag }))
 })
-export const deleteTag = createAsyncThunk('tags/deleteTag', async (tagId) => {
+export const deleteTag = createAsyncThunk('tags/deleteTag', async (req) => {
+  const { uid, tagId } = req
   return fetch(
-    `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/O0wXDnZ2UNYuDSJTnwn7zZMqN1p1/tags/${tagId}.json`,
+    `https://schedule-8520f-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/tags/${tagId}.json`,
     { method: 'DELETE' }
   )
     .then((res) => res.json())

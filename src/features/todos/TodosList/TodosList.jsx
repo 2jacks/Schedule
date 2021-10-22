@@ -9,9 +9,11 @@ import './TodosList.css'
 import { TodoItem } from '../TodoItem/TodoItem'
 
 import { AddTodoForm } from '../AddTodoForm/AddTodoForm'
+import { selectUser } from '../../user/userSlice'
 
 export const TodosList = () => {
   const dispatch = useDispatch()
+  const user = useSelector(selectUser)
 
   const todosStatus = useSelector((state) => state.todos.status)
   const error = useSelector((state) => state.todos.error)
@@ -34,7 +36,7 @@ export const TodosList = () => {
 
   useEffect(() => {
     if (todosStatus === 'idle') {
-      dispatch(fetchTodos())
+      dispatch(fetchTodos(user.localId))
     }
   }, [todosStatus, dispatch])
 

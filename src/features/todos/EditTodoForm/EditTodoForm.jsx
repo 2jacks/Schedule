@@ -7,9 +7,11 @@ import { unwrapResult } from '@reduxjs/toolkit'
 
 import { selectTodoById, updateTodo } from '../todosSlice'
 import { selectAllTags } from '../../tags/tagsSlice'
+import { selectUser } from '../../user/userSlice'
 
 export const EditTodoForm = ({ closeModal, todoId }) => {
   const dispatch = useDispatch()
+  const user = useSelector(selectUser)
   const todo = useSelector((state) => selectTodoById(state, todoId))
   const allTags = useSelector(selectAllTags)
 
@@ -37,7 +39,7 @@ export const EditTodoForm = ({ closeModal, todoId }) => {
       try {
         setSaveRequestStatus('pending')
         const resultAction = await dispatch(
-          updateTodo({ todoId, content, date, tags })
+          updateTodo({ uid: user.localId, todoId, content, date, tags })
         )
         unwrapResult(resultAction)
       } catch (err) {

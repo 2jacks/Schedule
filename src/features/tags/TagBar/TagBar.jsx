@@ -6,9 +6,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { addNewTag, fetchTags, selectAllTags, setFilterTag } from '../tagsSlice'
 
 import { SingleTag } from '../SingleTag/SingleTag'
+import { selectUser } from '../../user/userSlice'
 
 export const TagBar = () => {
   const dispatch = useDispatch()
+  const user = useSelector(selectUser)
 
   const tagsStatus = useSelector((state) => state.tags.status)
   const error = useSelector((state) => state.tags.error)
@@ -19,7 +21,7 @@ export const TagBar = () => {
 
   useEffect(() => {
     if (tagsStatus === 'idle') {
-      dispatch(fetchTags())
+      dispatch(fetchTags(user.localId))
     }
   }, [tagsStatus, dispatch])
 
@@ -29,7 +31,7 @@ export const TagBar = () => {
 
   const onAddInputChanged = (e) => setNewTag(e.target.value)
   const onAddButtonClicked = () => {
-    dispatch(addNewTag(newTag))
+    dispatch(addNewTag({ uid: user.localId, tag: newTag }))
     setNewTag('')
   }
 
